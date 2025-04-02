@@ -3,7 +3,7 @@
     <Beverage :isIced="beverageStore.currentTemp === 'Cold'" />
     <ul>
       <li>
-        <template v-for="temp in beverageStore.temps" :key="temp">
+        <template v-for="temp in beverageStore.temps" :key="temp.id">
           <label>
             <input
               type="radio"
@@ -16,16 +16,60 @@
           </label>
         </template>
       </li>
+      <li>
+        <template v-for="base in beverageStore.bases" :key="base.id">
+          <label>
+            <input
+              type="radio"
+              name="Base Bev"
+              :id="`r${base.id}`"
+              :value="base.color"
+              v-model="beverageStore.currentBase"
+            />
+            {{ base.name }}
+          </label>
+        </template>
+      </li>
+      <li>
+        <template v-for="creamer in beverageStore.creamers" :key="creamer.id">
+          <label>
+            <input
+              type="radio"
+              name="Creamer"
+              :id="`r${creamer.id}`"
+              :value="creamer.color"
+              v-model="beverageStore.currentCreamer"
+            />
+            {{ creamer.name }}
+          </label>
+        </template>
+      </li>
+      <li>
+        <template v-for="syrup in beverageStore.syrups" :key="syrup.id">
+          <label>
+            <input
+              type="radio"
+              name="Syrup"
+              :id="`r${syrup.id}`"
+              :value="syrup.color"
+              v-model="beverageStore.currentSyrup"
+            />
+            {{ syrup.name }}
+          </label>
+        </template>
+      </li>
+      <input type="text" placeholder="Beverage Name" v-model="beverageStore.currentName">
+    <button @click="beverageStore.makeBeverage()">Make Beverage</button>
     </ul>
-    <input type="text" placeholder="Beverage Name" />
-    <button>🍺 Make Beverage</button>
+    <div id="beverage-container" style="margin-top: 20px"></div>
   </div>
-  <div id="beverage-container" style="margin-top: 20px"></div>
+
 </template>
 
 <script setup lang="ts">
 import Beverage from "./components/Beverage.vue";
 import { useBeverageStore } from "./stores/beverageStore";
+
 const beverageStore = useBeverageStore();
 </script>
 
