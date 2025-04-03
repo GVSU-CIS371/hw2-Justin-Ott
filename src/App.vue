@@ -23,7 +23,7 @@
               type="radio"
               name="Base Bev"
               :id="`r${base.id}`"
-              :value="base.color"
+              :value="base"
               v-model="beverageStore.currentBase"
             />
             {{ base.name }}
@@ -37,7 +37,7 @@
               type="radio"
               name="Creamer"
               :id="`r${creamer.id}`"
-              :value="creamer.color"
+              :value="creamer"
               v-model="beverageStore.currentCreamer"
             />
             {{ creamer.name }}
@@ -51,7 +51,7 @@
               type="radio"
               name="Syrup"
               :id="`r${syrup.id}`"
-              :value="syrup.color"
+              :value="syrup"
               v-model="beverageStore.currentSyrup"
             />
             {{ syrup.name }}
@@ -59,9 +59,24 @@
         </template>
       </li>
       <input type="text" placeholder="Beverage Name" v-model="beverageStore.currentName">
-    <button @click="beverageStore.makeBeverage()">Make Beverage</button>
+      <button @click="beverageStore.makeBeverage()">Make Beverage</button>
+      <button @click="clearBeverages">Clear All Beverages</button>
     </ul>
-    <div id="beverage-container" style="margin-top: 20px"></div>
+    <div 
+      v-for="beverage in beverageStore.beverages" 
+      :key="beverage.id"
+      @click="loadBeverage(beverage)"
+      :style="{
+        cursor: 'pointer',
+        padding: '5px',
+        margin: '3px',
+        background: beverageStore.currentBeverage?.id === beverage.id 
+          ? 'rgba(255,255,255,0.3)' 
+          : 'rgba(255,255,255,0.1)'
+      }"
+    >
+      {{ beverage.name }} - {{ beverage.temp }} {{ beverage.base.name }}
+    </div>
   </div>
 
 </template>
@@ -69,8 +84,42 @@
 <script setup lang="ts">
 import Beverage from "./components/Beverage.vue";
 import { useBeverageStore } from "./stores/beverageStore";
+import { watch } from 'vue';
+import { BeverageType } from "./types/beverage";
 
 const beverageStore = useBeverageStore();
+
+const loadBeverage = (beverage: BeverageType) => {
+  beverageStore.showBeverage(beverage);
+};
+
+const clearBeverages = () => {
+  useBeverageStore().$patch({ beverages: [], currentBeverage: null });
+};
+
+// Debugging: Log when selections change
+watch(
+  () => beverageStore.currentBase,
+  (newBase) => {
+    console.log('Selected Base:', newBase);
+  },
+  { deep: true }
+);
+
+watch(
+  () => beverageStore.currentSyrup,
+  (newSyrup) => {
+    console.log('Selected Syrup:', newSyrup);
+  },
+  { deep: true }
+);
+
+// Log initial state
+console.log('INITIAL STATE:', {
+  base: beverageStore.currentBase,
+  syrup: beverageStore.currentSyrup,
+  creamer: beverageStore.currentCreamer
+});
 </script>
 
 <style lang="scss">

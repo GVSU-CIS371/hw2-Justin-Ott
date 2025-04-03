@@ -1,13 +1,12 @@
 <template>
   <div 
     class="syrup" 
-    :style="{ backgroundColor: beverageStore.currentSyrup.color === 'transparent' ? 'transparent' : beverageStore.currentSyrup.color }"
+    :style="{ backgroundColor: beverageStore.currentSyrup.color }"
   ></div>
 </template>
 
 <script setup lang="ts">
 import { useBeverageStore } from "../stores/beverageStore";
-
 const beverageStore = useBeverageStore();
 </script>
 

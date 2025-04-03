@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { useBeverageStore } from "../stores/beverageStore";
-
 const beverageStore = useBeverageStore();
 </script>
 
@@ -28,7 +27,6 @@ const beverageStore = useBeverageStore();
   top: 0;
   z-index: 220;
   animation: pour-tea 2s forwards;
-  background-color: transparent; /* Ensure creamer is transparent */
 }
 
 .froth {
